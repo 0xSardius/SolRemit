@@ -1,0 +1,12 @@
+{
+  "//": "Rename to .mcp.json to enable. Confirm the exact Helius MCP package + add your key first. The Coinbase Developer Platform MCP is connected at the account level and does NOT need an entry here.",
+  "mcpServers": {
+    "helius": {
+      "command": "npx",
+      "args": ["-y", "helius-mcp"],
+      "env": {
+        "HELIUS_API_KEY": "YOUR_HELIUS_KEY"
+      }
+    }
+  }
+}

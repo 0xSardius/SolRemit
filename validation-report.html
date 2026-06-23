@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SolRemit — Validation Report</title>
+<style>
+  :root{
+    --bg:#0c0f14; --panel:#141a22; --panel2:#1a212b; --ink:#e9eef5; --muted:#94a3b8;
+    --line:#26303c; --teal:#2dd4bf; --green:#34d399; --amber:#fbbf24; --red:#f87171;
+    --violet:#a78bfa;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:linear-gradient(160deg,#0c0f14,#0e131a);color:var(--ink);
+    font:15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:40px 20px}
+  .wrap{max-width:980px;margin:0 auto}
+  h1{font-size:34px;margin:0 0 4px;letter-spacing:-.5px}
+  h1 span{color:var(--teal)}
+  .sub{color:var(--muted);margin:0 0 28px}
+  .verdict{display:flex;align-items:center;gap:18px;background:var(--panel);border:1px solid var(--line);
+    border-radius:16px;padding:22px 26px;margin-bottom:26px}
+  .badge{font-size:26px;font-weight:700;padding:8px 20px;border-radius:12px;letter-spacing:.5px}
+  .go{background:rgba(52,211,153,.15);color:var(--green);border:1px solid rgba(52,211,153,.4)}
+  .verdict p{margin:0;color:var(--muted)}
+  .verdict b{color:var(--ink)}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-bottom:26px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px}
+  .card h3{margin:0 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.7px;color:var(--muted)}
+  .card .val{font-size:20px;font-weight:700}
+  .strong{color:var(--green)} .mod{color:var(--amber)} .weak{color:var(--red)} .neutral{color:var(--teal)}
+  section{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:24px 28px;margin-bottom:22px}
+  section h2{margin:0 0 16px;font-size:20px}
+  .sig{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
+  .sig:last-child{border-bottom:0}
+  .dot{flex:0 0 10px;height:10px;border-radius:50%;margin-top:7px}
+  .d-strong{background:var(--green)} .d-mod{background:var(--amber)}
+  .sig .t{font-weight:600}
+  .sig .m{color:var(--muted);font-size:14px}
+  table{width:100%;border-collapse:collapse}
+  th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top;font-size:14px}
+  th{color:var(--muted);font-weight:600;text-transform:uppercase;font-size:11px;letter-spacing:.6px}
+  .sev-high{color:var(--red);font-weight:700}.sev-med{color:var(--amber);font-weight:700}.sev-low{color:var(--green);font-weight:700}
+  ol{margin:0;padding-left:20px} ol li{margin:8px 0}
+  .skill{display:inline-block;background:var(--panel2);border:1px solid var(--line);border-radius:8px;
+    padding:2px 9px;font-size:12px;color:var(--teal);font-family:ui-monospace,monospace;margin:2px}
+  .footer{color:var(--muted);font-size:12px;text-align:center;margin-top:30px}
+  a{color:var(--teal)}
+  .wedge{background:var(--panel2);border-left:3px solid var(--violet);padding:14px 18px;border-radius:8px;margin-top:12px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1><span>SolRemit</span> — Validation Report</h1>
+  <p class="sub">Wise-style cross-border remittance on Solana · stablecoin FX via Jupiter · ramps via Coinbase CDP · 2026-06-19</p>
+
+  <div class="verdict">
+    <div class="badge go">GO</div>
+    <p><b>Build the MVP — but not as a generic Wise clone.</b> Demand is proven by on-chain growth and incumbent entry. The field is crowded, so success depends on picking a <b>specific corridor + wedge</b>. Confidence: <b>0.7</b>.</p>
+  </div>
+
+  <div class="grid">
+    <div class="card"><h3>Demand</h3><div class="val strong">Strong (3/3)</div></div>
+    <div class="card"><h3>Competition</h3><div class="val weak">Crowded</div></div>
+    <div class="card"><h3>Tech Feasibility</h3><div class="val strong">Integration-first</div></div>
+    <div class="card"><h3>Time to MVP demo</h3><div class="val mod">~2 weeks</div></div>
+    <div class="card"><h3>Crypto necessity</h3><div class="val strong">Essential</div></div>
+    <div class="card"><h3>Regulatory</h3><div class="val weak">Hard (partner-ride)</div></div>
+  </div>
+
+  <section>
+    <h2>Demand Signals (concrete, not vibes)</h2>
+    <div class="sig"><div class="dot d-strong"></div><div><div class="t">Non-USD stablecoin senders on Solana nearly TRIPLED YoY</div><div class="m">EURC + BRZ led the surge (Dune, via The Defiant, Apr 2026). On-chain users already paying to do exactly this = strongest possible signal.</div></div></div>
+    <div class="sig"><div class="dot d-strong"></div><div><div class="t">Incumbents are entering with budget</div><div class="m">Western Union launched USDPT on Solana (Mar 2026) + "Stable by Western Union" across 40+ countries; MoneyGram rolling a stablecoin app to ~50M users. Validates thesis; also raises the competitive bar.</div></div></div>
+    <div class="sig"><div class="dot d-strong"></div><div><div class="t">Volume is real and compounding</div><div class="m">~$390B stablecoin payment volume in 2025 (≈2x YoY); remittances already ≈3% of the $200T cross-border market. Circulation projected &gt;$1T by late 2026.</div></div></div>
+    <div class="sig"><div class="dot d-mod"></div><div><div class="t">Live Solana products prove the model works</div><div class="m">Sphere (120+ countries, USD/EUR/MXN, instant off-ramp), Decaf (borderless banking), KAST (stablecoin money app + card). Crowded = de-risked model, but you must differentiate.</div></div></div>
+  </section>
+
+  <section>
+    <h2>Crypto Necessity Gut-Check — "What breaks if you remove the blockchain?"</h2>
+    <p style="color:var(--muted);margin:0">Everything that matters. Settlement drops from T+2/days to <b>seconds</b>; cost from 5–7% (World Bank avg remittance) to <b>fractions of a cent</b>; operators hold liquidity in USDC/EURC and rebalance in seconds instead of pre-funding nostro accounts. Transparent FX (Jupiter quotes the exact route + price impact) is impossible to fake on a public ledger. <b>Crypto is load-bearing, not ornamental.</b></p>
+  </section>
+
+  <section>
+    <h2>Risk Map</h2>
+    <table>
+      <tr><th>Category</th><th>Risk</th><th>Severity</th><th>Mitigation</th></tr>
+      <tr><td>Regulatory</td><td>Money transmitter licensing (US: FinCEN MSB + per-state MTL, 12–24mo), MiCA authorization in EU (by Jul 1 2026), KYC/AML + Travel Rule.</td><td class="sev-high">HIGH</td><td>Do NOT self-license for MVP. Ride licensed partner rails: Coinbase CDP handles on-ramp KYC/compliance; use a licensed off-ramp partner per corridor (e.g. Sphere/Transak-style). Position as a software front-end on compliant rails.</td></tr>
+      <tr><td>Market</td><td>Crowded: Sphere, Decaf, KAST + Western Union, MoneyGram. Generic clone has no wedge.</td><td class="sev-high">HIGH</td><td>Pick ONE corridor + underserved segment. Compete on transparency/UX, not breadth.</td></tr>
+      <tr><td>Technical</td><td>Off-ramp coverage & FX liquidity thin in some corridors; EURC/local-stable depth varies.</td><td class="sev-med">MED</td><td>Jupiter routes USDC↔EURC↔others with best-price + price-impact surfaced; start in corridors with deep liquidity + working off-ramp.</td></tr>
+      <tr><td>Market</td><td>No demonstrated unfair advantage yet (relationships, distribution, corridor expertise).</td><td class="sev-med">MED</td><td>Resolve before scaling: what corridor/community do you have an edge in?</td></tr>
+    </table>
+    <div class="wedge">
+      <b>Recommended wedge (the must-decide):</b> Don't ship "send money anywhere." Ship <b>one corridor</b> (e.g. US→Mexico USD→MXN, or EU→Nigeria EUR→NGN) for <b>one underserved segment</b>, and win on <b>radical FX transparency</b> — show the live Jupiter route, mid-market rate, price impact, and total landed cost, side-by-side vs Wise/Western Union. That comparison IS the product.
+    </div>
+  </section>
+
+  <section>
+    <h2>Integration-First Assessment</h2>
+    <p style="color:var(--muted);margin:0 0 10px">This is a textbook <b>integrate-first</b> build — no custom on-chain program required for the MVP. That means faster to ship and near-zero audit cost.</p>
+    <div>
+      <span class="skill">integrating-jupiter</span> transparent FX routing/quotes (USDC↔EURC↔local)
+      <span class="skill">Coinbase CDP (MCP)</span> fiat on-ramp + KYC
+      <span class="skill">solana-dev</span> wallet + RPC + transfer rails (@solana/kit)
+      <span class="skill">authenticate-wallet</span> sign-in
+      <span class="skill">scaffold-project</span> workspace/stack
+      <span class="skill">frontend-design</span> + <span class="skill">number-formatting</span> the FX-transparency UI
+      <span class="skill">cso</span> security audit (money app)
+    </div>
+    <p style="color:var(--muted);margin:10px 0 0">Custom Anchor program (<span class="skill">solana-anchor-claude-skill</span>) only if you later add on-chain escrow, programmatic fee splits, or recipient-routing logic — not needed for v1.</p>
+  </section>
+
+  <section>
+    <h2>Next Steps</h2>
+    <ol>
+      <li><b>Pick the wedge corridor + segment</b> (decide before scaffolding). This single choice shapes the whole build.</li>
+      <li><b>Confirm partner-ride compliance posture</b> — Coinbase CDP for on-ramp/KYC; identify the licensed off-ramp partner for the chosen corridor.</li>
+      <li><b>Spike the FX core</b> with <span class="skill">integrating-jupiter</span>: get a real USDC→EURC (or →local) quote with route + price impact + total cost.</li>
+      <li><b>Scaffold</b> with <span class="skill">scaffold-project</span> (reads this idea-context.md).</li>
+      <li><b>Build the transparency UI first</b> — the side-by-side "you save $X vs Wise" comparison is the differentiator.</li>
+      <li><b>Security pass</b> with <span class="skill">cso</span> before any mainnet/real-funds handling.</li>
+    </ol>
+  </section>
+
+  <p class="footer">Generated by validate-idea · solana-new · Phase 1 (Idea) → next: Phase 2 (Scaffold)</p>
+</div>
+</body>
+</html>
