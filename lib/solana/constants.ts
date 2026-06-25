@@ -17,6 +17,20 @@ export const USDC_MINT_DEVNET =
 export const USDC_DECIMALS = 6;
 
 /**
+ * MXNe ("Real MXN") — the destination stablecoin for the US->MX corridor.
+ * Mint confirmed live via the Jupiter Token API (NOT guessed). Note: at time of
+ * writing it is not on Jupiter's `verified` list and has a low organic score, and
+ * the symbol "MXN" is heavily impersonated by pump.fun tokens — so the app ALWAYS
+ * re-resolves + trust-checks this via lib/jupiter/resolveToken at request time and
+ * cross-checks against this expected mint.
+ */
+export const MXNE = {
+  symbol: "MXNe",
+  mint: "6zYgzrT7X2wi9a9NeMtUvUWLLmf2a8vBsbYkocYdB9wa",
+  decimals: 9,
+} as const;
+
+/**
  * The launch corridor (wedge). Everything ships for US→Mexico first.
  * Add corridors here only once liquidity + a licensed off-ramp partner exist.
  */
