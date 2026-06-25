@@ -30,8 +30,17 @@ Phase 2 (Scaffold) output. Read by build-with-claude / integrating-jupiter (Phas
 
 ## build_status
 - mvp_complete: false
-- tests_passing: false
+- tests_passing: true   # lib/fx unit tests (5 passing)
 - devnet_deployed: false
+- fx_core_complete: true # lib/jupiter + lib/fx + /api/fx/quote, verified live end-to-end
+
+## progress_log
+- Phase 3 slice 1 (integrating-jupiter): FX core shipped. Verified live: $200 USD ->
+  ~3435 MXN, 1.86% all-in, route via Orca Whirlpool, mid-market from Price v3.
+  KEY FINDING: at illustrative rails (1% on-ramp + 0.5% off-ramp), SolRemit beats
+  Western Union but loses to Wise by ~0.7% — ramp fees dominate, Jupiter FX is
+  near-mid (~0.4%). Beating Wise requires cheaper CDP/partner rails. MXNe is the
+  only real MXN stable and is NOT verified on Jupiter — trust-check surfaces this.
 
 ## next_phase_plan (Phase 3 — Build)
 1. integrating-jupiter: resolve mints (USDC/EURC/MXN-stable) + fetch a real quote with route + price impact + landed cost.

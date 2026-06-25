@@ -15,8 +15,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Solana dApp Starter",
-  description: "A minimal Next.js starter powered by @solana/react-hooks",
+  title: "SolRemit — transparent US→Mexico remittance on Solana",
+  description:
+    "Send money to Mexico with stablecoins. Transparent FX via Jupiter — see the mid-market rate, every fee, and what your recipient actually receives.",
   icons: {
     icon: "/icon.svg",
     shortcut: "/icon.svg",
