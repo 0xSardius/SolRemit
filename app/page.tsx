@@ -1,4 +1,5 @@
 import { FxComparisonPanel } from "./components/fx-comparison-panel";
+import { WalletBar } from "./components/wallet-bar";
 
 export default function Home() {
   return (
@@ -17,6 +18,8 @@ export default function Home() {
             your recipient receives — then compare it to Wise and Western Union.
           </p>
         </header>
+
+        <WalletBar />
 
         <FxComparisonPanel />
       </main>
