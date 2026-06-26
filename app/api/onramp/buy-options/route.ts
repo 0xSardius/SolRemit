@@ -6,10 +6,18 @@
 import { NextRequest, NextResponse } from "next/server";
 import { generateCDPJWT, getCDPCredentials, ONRAMP_API_BASE_URL } from "@/lib/cdp/auth";
 import { convertSnakeToCamelCase } from "@/lib/cdp/camel";
+import { rateLimit } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 
 export async function GET(request: NextRequest) {
+  const rl = rateLimit(request, "onramp-options", 20);
+  if (!rl.ok) {
+    return NextResponse.json(
+      { error: "Too many requests" },
+      { status: 429, headers: { "Retry-After": String(rl.retryAfter) } },
+    );
+  }
   try {
     getCDPCredentials();
   } catch {

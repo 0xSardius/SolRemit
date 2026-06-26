@@ -5,10 +5,18 @@
 
 import { NextResponse } from "next/server";
 import { executeOrder } from "@/lib/jupiter";
+import { rateLimit } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 
 export async function POST(req: Request) {
+  const rl = rateLimit(req, "fx-execute", 10);
+  if (!rl.ok) {
+    return NextResponse.json(
+      { error: "Too many requests" },
+      { status: 429, headers: { "Retry-After": String(rl.retryAfter) } },
+    );
+  }
   let body: { signedTransaction?: string; requestId?: string };
   try {
     body = await req.json();

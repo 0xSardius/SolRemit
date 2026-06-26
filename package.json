@@ -25,6 +25,9 @@
   ],
   "version": "0.0.0",
   "private": true,
+  "overrides": {
+    "ws": "$ws"
+  },
   "dependencies": {
     "@coinbase/cdp-core": "^0.0.113",
     "@coinbase/cdp-hooks": "^0.0.113",

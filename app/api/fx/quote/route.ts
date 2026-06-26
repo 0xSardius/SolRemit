@@ -19,6 +19,7 @@ import {
   toNative,
 } from "@/lib/jupiter";
 import { computeFxBreakdown, illustrativeBenchmark } from "@/lib/fx/calc";
+import { rateLimit } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -32,6 +33,13 @@ const ASSUMPTIONS = {
 };
 
 export async function GET(req: Request) {
+  const rl = rateLimit(req, "fx-quote", 60);
+  if (!rl.ok) {
+    return NextResponse.json(
+      { error: "Too many requests" },
+      { status: 429, headers: { "Retry-After": String(rl.retryAfter) } },
+    );
+  }
   try {
     const usd = Number(new URL(req.url).searchParams.get("usd") ?? "100");
     if (!Number.isFinite(usd) || usd <= 0 || usd > 50_000) {

@@ -7,11 +7,19 @@
 import { NextResponse } from "next/server";
 import { MXNE, USDC_MINT_MAINNET, USDC_DECIMALS } from "@/lib/solana/constants";
 import { describeRoute, fromNative, getFxQuote, toNative } from "@/lib/jupiter";
+import { rateLimit } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 export async function GET(req: Request) {
+  const rl = rateLimit(req, "fx-order", 20);
+  if (!rl.ok) {
+    return NextResponse.json(
+      { error: "Too many requests" },
+      { status: 429, headers: { "Retry-After": String(rl.retryAfter) } },
+    );
+  }
   try {
     const url = new URL(req.url);
     const usd = Number(url.searchParams.get("usd") ?? "0");
