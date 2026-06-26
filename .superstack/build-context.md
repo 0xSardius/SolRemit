@@ -35,6 +35,7 @@ Phase 2 (Scaffold) output. Read by build-with-claude / integrating-jupiter (Phas
 - fx_core_complete: true # lib/jupiter + lib/fx + /api/fx/quote, verified live end-to-end
 - fx_ui_complete: true   # FxComparisonPanel, verified live in headless browser
 - cdp_wallet_onramp_complete: true # gated; builds; NOT live-verified (needs CDP creds)
+- send_flow_complete: true # order->sign->execute wired; order route reaches Jupiter (balance-checked); full exec needs funded CDP wallet
 
 ## progress_log
 - Phase 3 slice 1 (integrating-jupiter): FX core shipped. Verified live: $200 USD ->

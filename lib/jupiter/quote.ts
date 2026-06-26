@@ -9,11 +9,17 @@ export interface FxQuoteParams {
   /** Input amount in native units (integer string). */
   amount: string;
   slippageBps?: number;
+  /**
+   * The taker's wallet address. Omit for a pure quote (transparency panel).
+   * Provide it to get back a signable base64 `transaction` + `requestId` for execution.
+   */
+  taker?: string;
 }
 
 /**
- * Fetch an Ultra order without a `taker`, so no transaction is built — we only
- * read the route, amounts, price impact, and fees for the transparency panel.
+ * Fetch an Ultra order. Without a `taker` it's a pure quote (no transaction).
+ * With a `taker` the response includes a base64 `transaction` and `requestId`
+ * ready for sign -> execute.
  */
 export async function getFxQuote(params: FxQuoteParams): Promise<JupiterOrder> {
   const qs = new URLSearchParams({
@@ -22,6 +28,7 @@ export async function getFxQuote(params: FxQuoteParams): Promise<JupiterOrder> {
     amount: params.amount,
   });
   if (params.slippageBps != null) qs.set("slippageBps", String(params.slippageBps));
+  if (params.taker) qs.set("taker", params.taker);
 
   const order = await jupiterFetch<JupiterOrder>(`/ultra/v1/order?${qs}`);
   if (order.error || order.errorCode != null) {

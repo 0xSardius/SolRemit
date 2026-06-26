@@ -1,5 +1,6 @@
 import { FxComparisonPanel } from "./components/fx-comparison-panel";
 import { WalletBar } from "./components/wallet-bar";
+import { SendFlow } from "./components/send-flow";
 
 export default function Home() {
   return (
@@ -22,6 +23,8 @@ export default function Home() {
         <WalletBar />
 
         <FxComparisonPanel />
+
+        <SendFlow />
       </main>
     </div>
   );
