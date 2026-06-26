@@ -24,6 +24,8 @@ export interface FxCalcInput {
   offRamp: RampFees;
   /** Solana network cost in USD (tiny). */
   networkFeeUsd: number;
+  /** SolRemit's disclosed FX markup in bps (e.g. 35 = 0.35%). This is revenue. */
+  platformFeeBps: number;
   /** Optional benchmark to compare against (e.g. Wise/Western Union). */
   benchmark?: { label: string; effectiveRateLocalPerUsd: number };
 }
@@ -33,6 +35,7 @@ export interface FeeBreakdownUsd {
   fx: number; // spread + Jupiter fee + price impact, vs mid-market
   network: number;
   offRamp: number;
+  platform: number; // SolRemit's disclosed markup (revenue)
   total: number;
 }
 

@@ -12,6 +12,11 @@ import { rateLimit } from "@/lib/rate-limit";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
+// SolRemit fee collection. Set SOLREMIT_FEE_ACCOUNT to a referral token account to
+// collect the markup on-chain at swap time (Jupiter takes a cut of integrator fees).
+const FEE_BPS = Number(process.env.SOLREMIT_FEE_BPS ?? 35);
+const FEE_ACCOUNT = process.env.SOLREMIT_FEE_ACCOUNT ?? "";
+
 export async function GET(req: Request) {
   const rl = rateLimit(req, "fx-order", 20);
   if (!rl.ok) {
@@ -37,6 +42,8 @@ export async function GET(req: Request) {
       outputMint: MXNE.mint,
       amount: toNative(usd, USDC_DECIMALS),
       taker,
+      // Collect the SolRemit markup on-chain when a fee account is configured.
+      ...(FEE_ACCOUNT ? { referralAccount: FEE_ACCOUNT, referralFee: FEE_BPS } : {}),
     });
 
     if (!order.transaction || !order.requestId) {

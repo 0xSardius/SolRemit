@@ -14,7 +14,7 @@ interface FxResponse {
     effectiveRate: number;
     spreadVsMidPct: number;
     localLanded: number;
-    feesUsd: { onRamp: number; fx: number; network: number; offRamp: number; total: number };
+    feesUsd: { onRamp: number; fx: number; network: number; offRamp: number; platform: number; total: number };
     totalCostPct: number;
   };
   benchmarks: { label: string; landedLocal: number; savingsLocal: number }[];
@@ -144,6 +144,7 @@ export function FxComparisonPanel() {
               <FeeRow label="FX (Jupiter vs mid-market)" value={b.feesUsd.fx} />
               <FeeRow label="Solana network" value={b.feesUsd.network} />
               <FeeRow label="Off-ramp (MXN partner)" value={b.feesUsd.offRamp} />
+              <FeeRow label="SolRemit fee" value={b.feesUsd.platform} />
               <div className="mt-1 flex items-center justify-between border-t border-border-low pt-2 text-sm font-semibold">
                 <span>Total cost</span>
                 <span>

@@ -24,12 +24,16 @@ import { rateLimit } from "@/lib/rate-limit";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
+// SolRemit's disclosed FX markup (revenue), in bps. Configurable via env.
+const PLATFORM_FEE_BPS = Number(process.env.SOLREMIT_FEE_BPS ?? 35);
+
 // Illustrative ramp assumptions — replace with live CDP / partner quotes.
 const ASSUMPTIONS = {
   onRamp: { pct: 0.01, fixed: 0 }, // Coinbase CDP on-ramp (USD)
   offRamp: { pct: 0.005, fixed: 0 }, // licensed MXN partner (MXN)
   networkFeeUsd: 0.01, // Solana
-  note: "Ramp fees are placeholders pending live CDP/partner quotes.",
+  platformFeeBps: PLATFORM_FEE_BPS, // SolRemit markup — shown to the user
+  note: "Ramp fees are placeholders pending live CDP/partner quotes. SolRemit fee is disclosed in the breakdown.",
 };
 
 export async function GET(req: Request) {
@@ -81,6 +85,7 @@ export async function GET(req: Request) {
       onRamp: ASSUMPTIONS.onRamp,
       offRamp: ASSUMPTIONS.offRamp,
       networkFeeUsd: ASSUMPTIONS.networkFeeUsd,
+      platformFeeBps: ASSUMPTIONS.platformFeeBps,
     });
 
     const benchmarks = (["wise", "westernUnion"] as const).map((p) => {

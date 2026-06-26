@@ -14,6 +14,9 @@ export interface FxQuoteParams {
    * Provide it to get back a signable base64 `transaction` + `requestId` for execution.
    */
   taker?: string;
+  /** SolRemit fee collection: referral token account + fee in bps (Jupiter takes a cut). */
+  referralAccount?: string;
+  referralFee?: number;
 }
 
 /**
@@ -29,6 +32,10 @@ export async function getFxQuote(params: FxQuoteParams): Promise<JupiterOrder> {
   });
   if (params.slippageBps != null) qs.set("slippageBps", String(params.slippageBps));
   if (params.taker) qs.set("taker", params.taker);
+  if (params.referralAccount && params.referralFee) {
+    qs.set("referralAccount", params.referralAccount);
+    qs.set("referralFee", String(params.referralFee));
+  }
 
   const order = await jupiterFetch<JupiterOrder>(`/ultra/v1/order?${qs}`);
   if (order.error || order.errorCode != null) {

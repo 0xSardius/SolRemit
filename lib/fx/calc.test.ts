@@ -13,6 +13,7 @@ const base: FxCalcInput = {
   onRamp: { pct: 0.01, fixed: 0 },
   offRamp: { pct: 0.005, fixed: 0 },
   networkFeeUsd: 0.01,
+  platformFeeBps: 0,
 };
 
 describe("computeFxBreakdown", () => {
@@ -52,6 +53,17 @@ describe("computeFxBreakdown", () => {
     expect(r.savings!.benchmarkLabel).toBe("Western Union");
     expect(r.savings!.savingsLocal).toBeGreaterThan(0);
     expect(r.savings!.savingsPct).toBeGreaterThan(0);
+  });
+
+  it("books the SolRemit markup as revenue and reduces what the recipient gets", () => {
+    const noFee = computeFxBreakdown(base);
+    const withFee = computeFxBreakdown({ ...base, platformFeeBps: 35 });
+    // 0.35% of $100 = $0.35 revenue.
+    expect(withFee.feesUsd.platform).toBeCloseTo(0.35, 6);
+    expect(noFee.feesUsd.platform).toBe(0);
+    // Recipient gets less; total cost rises by exactly the fee.
+    expect(withFee.localLanded).toBeLessThan(noFee.localLanded);
+    expect(withFee.feesUsd.total).toBeCloseTo(noFee.feesUsd.total + 0.35, 6);
   });
 
   it("handles a zero send amount without dividing by zero", () => {

@@ -15,13 +15,18 @@ export function computeFxBreakdown(input: FxCalcInput): FxBreakdown {
     onRamp,
     offRamp,
     networkFeeUsd,
+    platformFeeBps,
     benchmark,
   } = input;
 
-  // Off-ramp takes a cut of the local proceeds.
+  // SolRemit's disclosed markup (revenue), taken as a % of the amount sent.
+  const platformUsd = sendAmountUsd * (platformFeeBps / 10000);
+  const platformLocal = platformUsd * midMarketRate;
+
+  // Off-ramp takes a cut of the local proceeds, then SolRemit's markup comes off.
   const localLanded = Math.max(
     0,
-    localOut * (1 - offRamp.pct) - offRamp.fixed,
+    localOut * (1 - offRamp.pct) - offRamp.fixed - platformLocal,
   );
 
   // All-in rate the recipient effectively gets per USD funded.
@@ -38,9 +43,10 @@ export function computeFxBreakdown(input: FxCalcInput): FxBreakdown {
   // at mid-market. Captures spread + Jupiter fee + price impact in one figure.
   const fxUsd = Math.max(0, usdcSwapped - localOut / midMarketRate);
 
-  const offRampUsd = (localOut - localLanded) / midMarketRate;
+  // Off-ramp cost only (platform markup is attributed separately, below).
+  const offRampUsd = (localOut * offRamp.pct + offRamp.fixed) / midMarketRate;
 
-  const total = onRampUsd + fxUsd + networkFeeUsd + offRampUsd;
+  const total = onRampUsd + fxUsd + networkFeeUsd + offRampUsd + platformUsd;
 
   const breakdown: FxBreakdown = {
     sendAmountUsd,
@@ -53,6 +59,7 @@ export function computeFxBreakdown(input: FxCalcInput): FxBreakdown {
       fx: fxUsd,
       network: networkFeeUsd,
       offRamp: offRampUsd,
+      platform: platformUsd,
       total,
     },
     totalCostPct: sendAmountUsd > 0 ? (total / sendAmountUsd) * 100 : 0,
