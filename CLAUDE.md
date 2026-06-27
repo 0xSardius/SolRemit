@@ -17,17 +17,23 @@ Wise / Western Union. Build this transparency view first.
 - **Ramps**: CDP for on-ramp + KYC; a separate **licensed MXN partner** for off-ramp.
 - **Compliance**: SolRemit is a software front-end on licensed partner rails for the MVP.
   Do NOT design flows that require us to self-hold money-transmitter licensing.
+- **Revenue**: transparent FX markup, default 35 bps (`SOLREMIT_FEE_BPS`), shown as a
+  "SolRemit fee" line and collected on-chain via Jupiter `referralFee` when
+  `SOLREMIT_FEE_ACCOUNT` is set. Beating Wise depends on cheaper ramps, not FX.
 
 ## Stack
 Next.js 16 (App Router) · Tailwind 4 · @solana/client + @solana/react-hooks · TypeScript.
 RPC via `NEXT_PUBLIC_SOLANA_RPC_URL` (Helius). Mints/corridor in `lib/solana/constants.ts`.
 
 ## Layout
-- `app/` — UI + API routes. `app/components/providers.tsx` wraps the Solana client.
-- `lib/solana/` — client, mints (USDC hardcoded; others via Jupiter Token API), corridor.
-- `lib/jupiter/` — FX routing + quotes (skill: `integrating-jupiter`).
-- `lib/cdp/` — on-ramp + embedded wallets (Coinbase CDP MCP + `solana-dev`).
-- `lib/fx/` — deterministic FX-transparency / savings math (+ `number-formatting`).
+- `app/` — UI + API routes (`api/fx/{quote,order,execute}`, `api/onramp/{buy-options,buy-quote}`).
+  Components: `fx-comparison-panel`, `wallet-bar`, `send-flow`, `cdp-provider`, `num`.
+- `lib/solana/` — client, mints (USDC + MXNe; others via Jupiter Token API), corridor.
+- `lib/jupiter/` — FX routing, quotes, order (taker), execute (skill: `integrating-jupiter`).
+- `lib/cdp/` — embedded wallets + on-ramp + server JWT (Coinbase CDP MCP + `solana-dev`).
+- `lib/fx/` — deterministic FX-transparency / savings / markup math (+ unit tests).
+- `lib/format/` — number formatting (`number-formatting` spec). `lib/rate-limit.ts` — API throttle.
+- Brand: `brand.md` (Forest Stake) → `app/globals.css` tokens.
 
 ## Conventions / guardrails
 - **Secrets**: never print or commit. `.env*` is gitignored. Client-exposed vars must be
@@ -43,7 +49,17 @@ RPC via `NEXT_PUBLIC_SOLANA_RPC_URL` (Helius). Mints/corridor in `lib/solana/con
 - Security pass before real funds → `cso`
 - Ship → `review-and-iterate`, `deploy-to-mainnet`
 
-## Journey
-Phase 1 Idea ✅ (validate-idea, GO) → Phase 2 Scaffold ✅ → **Phase 3 Build** (next:
-build-with-claude / integrating-jupiter) → Phase 4 Harden/Ship.
-See `.superstack/idea-context.md` and `.superstack/build-context.md`.
+## Status (as of last session)
+All MVP slices built and on `origin/main` (https://github.com/0xSardius/SolRemit):
+- ✅ Validate (`validate-idea`, GO) · ✅ Scaffold (`scaffold-project`)
+- ✅ FX core (`integrating-jupiter`) — quote/order/execute, **live-verified**
+- ✅ Transparency UI (`number-formatting` + `frontend-design-guidelines`) — **verified in browser**
+- ◑ Wallet + on-ramp (CDP) — built + gated; **needs CDP creds to activate** (see `lib/cdp/README.md`)
+- ◑ Send flow — order→sign→execute wired; **needs a funded wallet** for full execution
+- ✅ Security (`cso`) — 2 MEDIUM fixed (ws override, rate limiting); report in `.superstack/security-reports/`
+- ✅ Brand (`brand-design`) — Forest Stake applied
+- ✅ Revenue — transparent 35 bps markup, disclosed + on-chain collectible
+
+**Remaining to launch:** real CDP creds + domain allowlist; select/integrate licensed MXN
+off-ramp partner; negotiate cheaper ramps (to beat Wise); deploy (`deploy-to-mainnet`).
+See `.superstack/idea-context.md`, `.superstack/build-context.md`, and `validation-report.html`.
