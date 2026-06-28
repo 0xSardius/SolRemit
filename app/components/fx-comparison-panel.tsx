@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Num } from "./num";
+import { useLang } from "./lang-provider";
 import { formatFiat, formatPercent, formatRate } from "@/lib/format/number";
 
 interface FxResponse {
@@ -29,6 +30,7 @@ export function FxComparisonPanel() {
   const [status, setStatus] = useState<Status>("loading");
   const [error, setError] = useState<string>("");
   const abortRef = useRef<AbortController | null>(null);
+  const { t } = useLang();
 
   const fetchQuote = useCallback(async (usd: number) => {
     abortRef.current?.abort();
@@ -64,7 +66,7 @@ export function FxComparisonPanel() {
       {/* Amount input */}
       <div className="space-y-2">
         <label htmlFor="send-usd" className="text-sm font-medium text-muted">
-          You send
+          {t("panel.youSend")}
         </label>
         <div className="flex items-center gap-2 rounded-xl border border-border-low bg-bg1 px-4 py-3 focus-within:ring-2 focus-within:ring-primary/40">
           <span className="font-mono text-lg text-muted" aria-hidden>$</span>
@@ -80,8 +82,7 @@ export function FxComparisonPanel() {
           <span className="text-sm font-medium text-muted">USD → MXN</span>
         </div>
         <p id="send-help" className="text-xs text-muted">
-          Live route via Jupiter. Mid-market rate, every fee, and what your recipient
-          actually receives — nothing hidden.
+          {t("panel.help")}
         </p>
       </div>
 
@@ -91,13 +92,13 @@ export function FxComparisonPanel() {
 
         {status === "error" && (
           <div className="flex flex-col items-start gap-3 rounded-xl border border-border-low bg-bg1 p-5">
-            <p className="text-sm text-foreground">Couldn’t fetch a live quote.</p>
+            <p className="text-sm text-foreground">{t("panel.loadingError")}</p>
             <p className="font-mono text-xs text-muted">{error}</p>
             <button
               onClick={() => fetchQuote(Number(amount))}
               className="rounded-lg border border-border-low bg-card px-3 py-2 text-sm font-medium transition hover:-translate-y-0.5 hover:shadow-sm focus-visible:ring-2 focus-visible:ring-primary/40"
             >
-              Try again
+              {t("panel.tryAgain")}
             </button>
           </div>
         )}
@@ -106,7 +107,7 @@ export function FxComparisonPanel() {
           <div className="space-y-5">
             {/* Hero: recipient gets */}
             <div className="rounded-xl border border-border-low bg-bg1 p-5">
-              <p className="text-sm text-muted">Recipient gets</p>
+              <p className="text-sm text-muted">{t("panel.recipientGets")}</p>
               <p className="mt-1 text-3xl font-semibold tracking-tight">
                 <Num result={formatFiat(b.localLanded, "MXN", "detailed")} />
                 <span className="ml-2 text-base font-normal text-muted">
@@ -115,38 +116,38 @@ export function FxComparisonPanel() {
               </p>
               <div className="mt-3 flex flex-wrap items-center gap-2 text-xs text-muted">
                 <span className="rounded-full bg-cream px-2.5 py-1">
-                  Route: {data.route}
+                  {t("panel.route")}: {data.route}
                 </span>
                 <span className="rounded-full bg-cream px-2.5 py-1">
-                  Price impact{" "}
+                  {t("panel.priceImpact")}{" "}
                   <Num result={formatPercent(Math.abs(Number(data.quote.priceImpactPct) * 100))} />
                 </span>
               </div>
               {!data.destination.trust.ok && (
                 <p className="mt-3 rounded-lg border border-amber-500/40 bg-amber-500/10 px-3 py-2 text-xs text-amber-700 dark:text-amber-300">
-                  ⚠ {data.destination.symbol}: {data.destination.trust.warnings.join("; ")}.
-                  Verified live against the expected mint before routing.
+                  ⚠ {data.destination.symbol}: {data.destination.trust.warnings.join("; ")}.{" "}
+                  {t("panel.trustVerified")}
                 </p>
               )}
             </div>
 
             {/* Rates */}
             <dl className="grid grid-cols-3 gap-3 text-center">
-              <RateCell label="Mid-market" value={formatRate(b.midMarketRate)} />
-              <RateCell label="Your rate" value={formatRate(b.effectiveRate)} emphasize />
-              <RateCell label="Spread" value={formatPercent(b.spreadVsMidPct)} />
+              <RateCell label={t("panel.midMarket")} value={formatRate(b.midMarketRate)} />
+              <RateCell label={t("panel.yourRate")} value={formatRate(b.effectiveRate)} emphasize />
+              <RateCell label={t("panel.spread")} value={formatPercent(b.spreadVsMidPct)} />
             </dl>
 
             {/* Fee breakdown */}
             <div className="space-y-2 rounded-xl border border-border-low p-4">
-              <p className="text-sm font-medium">Where every cent goes</p>
-              <FeeRow label="On-ramp (Coinbase)" value={b.feesUsd.onRamp} />
-              <FeeRow label="FX (Jupiter vs mid-market)" value={b.feesUsd.fx} />
-              <FeeRow label="Solana network" value={b.feesUsd.network} />
-              <FeeRow label="Off-ramp (MXN partner)" value={b.feesUsd.offRamp} />
-              <FeeRow label="SolRemit fee" value={b.feesUsd.platform} />
+              <p className="text-sm font-medium">{t("panel.whereEveryCent")}</p>
+              <FeeRow label={t("fee.onRamp")} value={b.feesUsd.onRamp} />
+              <FeeRow label={t("fee.fx")} value={b.feesUsd.fx} />
+              <FeeRow label={t("fee.network")} value={b.feesUsd.network} />
+              <FeeRow label={t("fee.offRamp")} value={b.feesUsd.offRamp} />
+              <FeeRow label={t("fee.platform")} value={b.feesUsd.platform} />
               <div className="mt-1 flex items-center justify-between border-t border-border-low pt-2 text-sm font-semibold">
-                <span>Total cost</span>
+                <span>{t("panel.totalCost")}</span>
                 <span>
                   <Num result={formatFiat(b.feesUsd.total, "USD", "detailed")} />
                   <span className="ml-2 text-muted">
@@ -160,12 +161,16 @@ export function FxComparisonPanel() {
             <div className="space-y-2">
               {data.benchmarks.map((bm) => {
                 const saves = bm.savingsLocal >= 0;
+                // Template carries word order per language; split on {x} for the amount.
+                const [before, after] = t(saves ? "panel.getsMore" : "panel.costsMore").split("{x}");
                 return (
                   <div
                     key={bm.label}
                     className="flex items-center justify-between rounded-lg bg-bg1 px-4 py-2.5 text-sm"
                   >
-                    <span className="text-muted">vs {bm.label}</span>
+                    <span className="text-muted">
+                      {t("panel.vs")} {bm.label}
+                    </span>
                     <span
                       className={
                         saves
@@ -173,11 +178,9 @@ export function FxComparisonPanel() {
                           : "font-medium text-amber-600 dark:text-amber-400"
                       }
                     >
-                      {saves ? "Recipient gets " : "Costs "}
-                      <Num
-                        result={formatFiat(Math.abs(bm.savingsLocal), "MXN", "detailed")}
-                      />{" "}
-                      more
+                      {before}
+                      <Num result={formatFiat(Math.abs(bm.savingsLocal), "MXN", "detailed")} />
+                      {after}
                     </span>
                   </div>
                 );

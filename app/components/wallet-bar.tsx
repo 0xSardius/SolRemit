@@ -10,14 +10,15 @@ import {
   useVerifyEmailOTP,
 } from "@coinbase/cdp-hooks";
 import { isCdpConfigured } from "@/lib/cdp/config";
+import { useLang } from "./lang-provider";
 
 /** Gate: only mount the hook-using inner bar when CDP is actually configured. */
 export function WalletBar() {
+  const { t } = useLang();
   if (!isCdpConfigured) {
     return (
       <p className="rounded-lg border border-border-low bg-bg1 px-4 py-2.5 text-xs text-muted">
-        Wallet &amp; on-ramp are off. Set <code className="font-mono">NEXT_PUBLIC_CDP_PROJECT_ID</code>{" "}
-        (and CDP API keys) to enable email sign-in + USD→USDC funding.
+        {t("wallet.off")}
       </p>
     );
   }

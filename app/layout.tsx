@@ -3,6 +3,7 @@ import { Geist_Mono, Inter } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./components/providers";
 import { CdpProvider } from "./components/cdp-provider";
+import { LangProvider } from "./components/lang-provider";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -38,7 +39,9 @@ export default function RootLayout({
           suppressHydrationWarning
           className={`${inter.variable} ${geistMono.variable} antialiased`}
         >
-          <CdpProvider>{children}</CdpProvider>
+          <LangProvider>
+            <CdpProvider>{children}</CdpProvider>
+          </LangProvider>
         </body>
       </Providers>
     </html>
